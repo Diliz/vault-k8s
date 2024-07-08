@@ -204,8 +204,8 @@ func (a *Agent) newTemplateConfigs() []*Template {
 			Source:        templateFile,
 			Contents:      template,
 			Destination:   filePathAndName,
-			LeftDelim:     "{{",
-			RightDelim:    "}}",
+			LeftDelim:     secret.LeftDelim,
+			RightDelim:    secret.RightDelim,
 			Command:       secret.Command,
 			ErrMissingKey: secret.ErrMissingKey,
 		}

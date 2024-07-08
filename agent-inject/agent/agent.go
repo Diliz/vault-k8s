@@ -216,6 +216,12 @@ type Secret struct {
 	// Template is the optional custom template to use when rendering the secret.
 	Template string
 
+	// LeftDelim is the optional custom template left delimiter to use when rendering the secret.
+	LeftDelim string
+
+	// RightDelim is the optional custom template right delimiter to use when rendering the secret.
+	RightDelim string
+
 	// Template file is the optional path on disk to the custom template to use when rendering the secret.
 	TemplateFile string
 

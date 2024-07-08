@@ -61,6 +61,16 @@ const (
 	// If not provided, a default generic template is used.
 	AnnotationAgentInjectTemplate = "vault.hashicorp.com/agent-inject-template"
 
+	// AnnotationAgentInjectLeftDelim sets the default template left delimiter. Default value
+	// is "{{". The name of the template if any unique strings after
+	// "vault.hashicorp.com/agent-inject-leftdelim-".
+	AnnotationAgentInjectLeftDelim = "vault.hashicorp.com/agent-inject-leftdelim"
+
+	// AnnotationAgentInjectRightDelim sets the default template right delimiter. Default value
+	// is "{{". The name of the template if any unique strings after
+	// "vault.hashicorp.com/agent-inject-leftdelim-".
+	AnnotationAgentInjectRightDelim = "vault.hashicorp.com/agent-inject-rightdelim"
+
 	// AnnotationAgentInjectContainers is the key of the annotation that controls
 	// in which containers the secrets volume should be mounted. Multiple containers can
 	// be specified in a comma-separated list. If not provided, the secrets volume will
@@ -643,6 +653,12 @@ func (a *Agent) secrets() ([]*Secret, error) {
 		secret.Template = a.annotationsSecretValue(AnnotationAgentInjectTemplate, secret.RawName, "")
 		if secret.Template == "" {
 			secret.TemplateFile = a.annotationsSecretValue(AnnotationAgentInjectTemplateFile, secret.RawName, secret.TemplateFile)
+		}
+		secret.LeftDelim = a.annotationsSecretValue(AnnotationAgentInjectLeftDelim, secret.RawName, "{{")
+		secret.RightDelim = a.annotationsSecretValue(AnnotationAgentInjectRightDelim, secret.RawName, "}}")
+		if secret.LeftDelim == "" || secret.RightDelim == "" {
+			secret.LeftDelim = "{{"
+			secret.RightDelim = "}}"
 		}
 		secret.MountPath = a.annotationsSecretValue(AnnotationVaultSecretVolumePath, secret.RawName, a.Annotations[AnnotationVaultSecretVolumePath])
 		secret.Command = a.annotationsSecretValue(AnnotationAgentInjectCommand, secret.RawName, "")
